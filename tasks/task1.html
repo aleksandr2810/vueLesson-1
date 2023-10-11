@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+	<title>Document</title>
+</head>
+
+<body>
+	<p>
+		Вводиться кількість пасажирів. Вивести:
+		скільки потрібно автобусів (кожен автобус на 20 місць)
+		скільки пляшок води (кожному пасажиру 2 пляшки)
+		скільки бутербродів (кожному пасажиру 3 бутерброди)
+	</p>
+	<div id="app">
+		<label>Number passengers
+			<input type="number" v-model="num" />
+		</label>
+		<div>You need buses : <span id="bus"> {{ buses }} </span></div>
+		<div>You need bottle of water : <span id="bottle">{{ bottle }}</span></div>
+		<div>You need hamburgers : <span id="hamburger">{{ hamburger }}</span></div>
+		<button @click="onResult">Result</button>
+	</div>
+
+	<script>
+		const { createApp } = Vue
+
+		createApp({
+			data() {
+				return {
+					num: 0,
+					buses: 0,
+					hamburger: 0,
+					bottle: 0,
+				}
+			},
+			methods: {
+				onResult() {
+					this.buses = Math.ceil(this.num / 20)
+					this.bottle = this.num * 2
+					this.hamburger = this.num * 3
+				},
+			},
+		}).mount('#app')
+	</script>
+</body>
+
+</html>

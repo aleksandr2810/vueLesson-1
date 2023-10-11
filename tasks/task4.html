@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+	<title>Document</title>
+</head>
+<style>
+	.minus {
+		color: red
+	}
+
+	.plus {
+		color: green
+	}
+</style>
+
+<body>
+	<p>
+		“Рахунок у банку”
+		Вимоги:
+		1) Спочатку сума дорівнює 0грн. Змінити суму у гривнях можна або зарахуванням на рахунок, або зняттям.
+		2) Сума автоматично переводиться у долари та євро (фіксований курс задається у data).
+		3) можливість зарахувати суму (контролювати, щоб не була від’ємною)
+		4) можливість зняти (щоб не можна зняти більше ніж є на рахунку)
+		5) при виконанні зняття і зарахування коштів вираховувати 3% від суми (відображати кількість відсотків
+		автоматично)
+
+		При зміні суми :
+		- якщо було зняття, то суму відоражати червоним
+		- якщо було зарахування, то суму відображати зеленим
+		Якщо сума валюти менша за 100 то відображати червоним кольором, інакше - зеленим
+	</p>
+	<div id="app">
+		<div :class='currentcolor'>Сума на рахунку: {{ sum }}</div>
+		<label>Зарахувати на рахунок
+			<input type="number" v-model="numPlus" />
+		</label>
+		<button @click="onPlus">Зарахувати</button><br>
+		<label>Зняти з рахунку
+			<input type="number" v-model="numMinus" />
+		</label>
+		<button @click="onMin">Зняти</button><br>
+		<div>Відсоток за обслуговування: {{ percent }} грн</div>
+		<hr>
+		<div>Сума у Евро: <span :class='color'>{{ sumEuro }}</span></div>
+		<div>Сума у Доларах: <span :class='color'>{{ sumDollar }}</span></div>
+	</div>
+
+	<script>
+		const { createApp } = Vue
+
+		createApp({
+			data() {
+				return {
+					sum: 0,
+					sumCopy: 0,
+					dollarRate: 38,
+					euroRate: 41,
+					numPlus: null,
+					numMinus: null,
+				}
+			},
+			methods: {
+				onPlus() {
+					if (this.numPlus > 0) this.sum += this.numPlus
+					else this.numPlus = 0
+					this.numPlus = 0
+				},
+				onMin() {
+					if (this.numMinus <= this.sum) this.sum -= this.numMinus, this.sumCopy = this.sum
+					else this.numMinus = 0
+					this.numMinus = 0
+				},
+			},
+			computed: {
+				currentcolor() {
+					let color
+					if (this.sumCopy < this.sum) color = 'plus', this.sumCopy = this.sum
+					else color = 'minus'
+					return color
+				},
+				color() {
+					let currectClass
+					if (this.sumEuro < 100) currectClass = 'minus'
+					else currectClass = 'plus'
+					return currectClass
+				},
+				sumDollar() {
+					return (this.sum / this.dollarRate).toFixed(2)
+				},
+				sumEuro() {
+					return (this.sum / this.euroRate).toFixed(2)
+				},
+				percent() {
+					if (this.numPlus > 0) return (this.numPlus * 3) / 100
+					if (this.numMinus > 0) return (this.numMinus * 3) / 100
+				}
+			},
+		}).mount('#app')
+	</script>
+</body>
+
+</html>

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+	<title>Document</title>
+</head>
+
+<body>
+	Вводиться номер місяця. Автоматично виводити рекомендований одяг (зима – пальто, літо – шорти ….). Також
+	автоматично виводити зображення з відповідним зображенням лісу (зима – ліс зі снігом, осінь – жовтий ліс,
+	…).
+	<div id="app">
+		<label>Number mounth
+			<input type="number" v-model="num" />
+		</label>
+		<div>Recommended clothing : <span>{{ clothing }}</span>
+			<img :src='picture' width="200" />
+		</div>
+	</div>
+
+	<script>
+		const { createApp } = Vue
+
+		createApp({
+			data() {
+				return {
+					num: 1,
+				}
+			},
+			computed: {
+				picture() {
+					switch (this.num) {
+						case 1:
+						case 12:
+						case 2:
+							return './../pexels-brett-sayles-1431822.jpg'
+							break;
+						case 3:
+						case 4:
+						case 5:
+							return './../pexels-pixabay-209831.jpg'
+							break;
+						case 6:
+						case 7:
+						case 8:
+							return './../pexels-tahir-shaw-186980.jpg'
+							break;
+						case 9:
+						case 10:
+						case 11:
+							return './../pexels-kaique-rocha-125510.jpg'
+							break;
+						default:
+							return './../pexels-tahir-shaw-186980.jpg'
+							break;
+					}
+
+				},
+				clothing() {
+					switch (this.num) {
+						case 1:
+						case 12:
+						case 2:
+							return 'пальто'
+							break;
+						case 3:
+						case 4:
+						case 5:
+							return 'сапоги'
+							break;
+						case 6:
+						case 7:
+						case 8:
+							return 'шорти'
+							break;
+						case 9:
+						case 10:
+						case 11:
+							return 'плащ'
+							break;
+						default:
+							return 'Error'
+							break;
+					}
+
+				},
+			},
+		}).mount('#app')
+	</script>
+</body>
+
+</html>
